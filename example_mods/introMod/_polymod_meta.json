@@ -1,8 +1,0 @@
-{
-	"title":"Intro Mod",
-	"description":"Modifys introText.txt to add a new line!",
-	"author":"The Funkin' Team",
-	"api_version":"0.2.6",
-	"mod_version":"1.0.0",
-	"license":"Apache 2.0"
-}

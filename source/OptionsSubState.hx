@@ -8,16 +8,12 @@ import flixel.util.FlxColor;
 
 class OptionsSubState extends MusicBeatSubstate
 {
-	var textMenuItems:Array<String> = ['Extra Score Info', 'Extra FPS Info', 'Botplay', 'Reload Mods'];
+	var textMenuItems:Array<String> = ['Master Volume', 'Sound Volume', 'Controls'];
 
 	var selector:FlxSprite;
 	var curSelected:Int = 0;
 
 	var grpOptionsTexts:FlxTypedGroup<FlxText>;
-
-	var reloadedText:FlxText;
-
-	var timer:Float = 500.0;
 
 	public function new()
 	{
@@ -35,63 +31,24 @@ class OptionsSubState extends MusicBeatSubstate
 			optionText.ID = i;
 			grpOptionsTexts.add(optionText);
 		}
-
-		changeSelection();
-
-		reloadedText = new FlxText(20,0,0,"Mods Reloaded!", 32);
-		reloadedText.y = 720 + reloadedText.height;
-		add(reloadedText);
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		timer += elapsed;
-
 		if (controls.UP_P)
-			changeSelection(-1);
+			curSelected -= 1;
 
 		if (controls.DOWN_P)
-			changeSelection(1);
-
-		if (timer > 1)
-			reloadedText.y = 720 - reloadedText.height - 25 + ((timer - 1) * 50);
-
-		if (controls.ACCEPT)
-		{
-			switch (textMenuItems[curSelected])
-			{
-				case "Extra Score Info":
-					LocalSettings.extra_score_info = !LocalSettings.extra_score_info;
-				case "Extra FPS Info":
-					LocalSettings.extra_fps_info = !LocalSettings.extra_fps_info;
-				case "Botplay":
-					LocalSettings.botplay = !LocalSettings.botplay;
-				case "Reload Mods":
-					TitleState.reloadMods();
-
-					reloadedText.y = 720 - reloadedText.height - 25;
-					timer = 0.0;
-			}
-		}
-
-		if (controls.BACK)
-			FlxG.switchState(new MainMenuState());
-	}
-
-	function changeSelection(amount:Int = 0)
-	{
-		curSelected += amount;
-
-		FlxG.sound.play(Paths.sound("scrollMenu"));
+			curSelected += 1;
 
 		if (curSelected < 0)
 			curSelected = textMenuItems.length - 1;
 
 		if (curSelected >= textMenuItems.length)
 			curSelected = 0;
-		
+
 		grpOptionsTexts.forEach(function(txt:FlxText)
 		{
 			txt.color = FlxColor.WHITE;
@@ -99,5 +56,15 @@ class OptionsSubState extends MusicBeatSubstate
 			if (txt.ID == curSelected)
 				txt.color = FlxColor.YELLOW;
 		});
+
+		if (controls.ACCEPT)
+		{
+			switch (textMenuItems[curSelected])
+			{
+				case "Controls":
+					FlxG.state.closeSubState();
+					FlxG.state.openSubState(new ControlsSubState());
+			}
+		}
 	}
 }

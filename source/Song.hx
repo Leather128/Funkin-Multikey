@@ -11,22 +11,20 @@ typedef SwagSong =
 {
 	var song:String;
 	var notes:Array<SwagSection>;
-	var bpm:Int;
+	var bpm:Float;
 	var needsVoices:Bool;
 	var speed:Float;
 
 	var player1:String;
 	var player2:String;
 	var validScore:Bool;
-
-	var mania:Null<Int>;
 }
 
 class Song
 {
 	public var song:String;
 	public var notes:Array<SwagSection>;
-	public var bpm:Int;
+	public var bpm:Float;
 	public var needsVoices:Bool = true;
 	public var speed:Float = 1;
 
@@ -73,10 +71,6 @@ class Song
 	{
 		var swagShit:SwagSong = cast Json.parse(rawJson).song;
 		swagShit.validScore = true;
-
-		if(swagShit.mania == null)
-			swagShit.mania = 0;
-
 		return swagShit;
 	}
 }
