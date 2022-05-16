@@ -1,5 +1,6 @@
 package;
 
+import custom.ModState;
 import flixel.util.FlxTimer;
 import flixel.FlxState;
 import ui.MenuItem;
@@ -95,18 +96,16 @@ class MainMenuState extends MusicBeatState
 		{
 			startExitState(new StoryMenuState());
 		});
+		
 		menuItems.createItem(null, null, "freeplay", function()
 		{
 			startExitState(new FreeplayState());
 		});
-		if (VideoState.seenVideo)
-		{
-			menuItems.createItem(null, null, "kickstarter", selectDonate, true);
-		}
-		else
-		{
-			menuItems.createItem(null, null, "donate", selectDonate, true);
-		}
+
+		menuItems.createItem(null, null, "mods", function() {
+			startExitState(new ModState());
+		});
+
 		menuItems.createItem(0, 0, "options", function()
 		{
 			startExitState(new OptionsState());

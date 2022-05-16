@@ -1,5 +1,7 @@
 package;
 
+import flixel.math.FlxPoint;
+import openfl.Assets;
 import Section.SwagSection;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -19,6 +21,8 @@ class Character extends FlxSprite
 	public var holdTimer:Float = 0;
 	
 	public var animationNotes:Array<Dynamic> = [];
+
+	public var posOffset:Array<Dynamic> = [0,0];
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -469,6 +473,37 @@ class Character extends FlxSprite
 				playAnim('idle');
 
 				flipX = true;
+			default:
+				if(!Assets.exists(Paths.image('characters/${curCharacter}_assets')))
+				{
+					frames = Paths.getSparrowAtlas('characters/DADDY_DEAREST');
+
+					quickAnimAdd('idle', 'Dad idle dance');
+					quickAnimAdd('singUP', 'Dad Sing Note UP');
+					quickAnimAdd('singRIGHT', 'Dad Sing Note RIGHT');
+					quickAnimAdd('singDOWN', 'Dad Sing Note DOWN');
+					quickAnimAdd('singLEFT', 'Dad Sing Note LEFT');
+
+					loadOffsetFile("dad");
+				}
+				else
+				{
+					frames = Paths.getSparrowAtlas('characters/${curCharacter}_assets');
+
+					loadOffsetFile(curCharacter);
+
+					for(anim => offset in animOffsets)
+					{
+						quickAnimAdd(anim, anim);
+
+						if(anim == "positionalOffset")
+							this.posOffset = offset;
+						if(anim == "scale")
+							this.scale = new FlxPoint(offset[0], offset[1]);
+					}
+				}
+
+				playAnim('idle');
 		}
 
 		dance();
@@ -534,7 +569,7 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
-		if (!curCharacter.startsWith('bf'))
+		if (!isPlayer)
 		{
 			if (animation.curAnim.name.startsWith('sing'))
 			{

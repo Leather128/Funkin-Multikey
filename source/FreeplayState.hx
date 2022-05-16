@@ -1,5 +1,6 @@
 package;
 
+import ui.PreferencesMenu;
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -20,8 +21,8 @@ class FreeplayState extends MusicBeatState
 	var songs:Array<SongMetadata> = [];
 
 	var selector:FlxText;
-	var curSelected:Int = 0;
-	var curDifficulty:Int = 1;
+	static var curSelected:Int = 0;
+	static var curDifficulty:Int = 1;
 
 	var bg:FlxSprite;
 	var scoreBG:FlxSprite;
@@ -41,11 +42,6 @@ class FreeplayState extends MusicBeatState
 	{
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
 
-		for (i in 0...initSonglist.length)
-		{
-			songs.push(new SongMetadata(initSonglist[i], 1, 'gf'));
-		}
-
 		/* 
 			if (FlxG.sound.music != null)
 			{
@@ -63,6 +59,8 @@ class FreeplayState extends MusicBeatState
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 		}
+
+		addWeek(["Tutorial"], 1, ['gf']);
 
 		if (StoryMenuState.weekUnlocked[2])
 			addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
@@ -84,6 +82,17 @@ class FreeplayState extends MusicBeatState
 
 		if (StoryMenuState.weekUnlocked[7])
 			addWeek(['Ugh', 'Guns', 'Stress'], 7, ['tankman']);
+
+		for (i in 0...initSonglist.length)
+		{
+			if(i != 0 && initSonglist[i] != '')
+			{
+				if(initSonglist[i].contains("~"))
+					songs.push(new SongMetadata(initSonglist[i].split("~")[0], 1, initSonglist[i].split("~")[1]));
+				else
+					songs.push(new SongMetadata(initSonglist[i], 1, 'face'));
+			}
+		}
 
 		// LOAD MUSIC
 
@@ -277,7 +286,8 @@ class FreeplayState extends MusicBeatState
 		#if PRELOAD_ALL
 		// No clue if this was removed or not, but I wanted to keep this as close as possible to the web version, and this is not in there.
 		// Yes, I know it's because the web version doesn't preload everything. If this being gone bothers you so much, then do it yourself lol.
-		//FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
+		if(PreferencesMenu.getPref("freeplay-music"))
+			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
 		#end
 
 		var bullShit:Int = 0;

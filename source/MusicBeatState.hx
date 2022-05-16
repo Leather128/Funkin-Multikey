@@ -1,5 +1,7 @@
 package;
 
+import lime.app.Application;
+import ui.PreferencesMenu;
 import Conductor.BPMChangeEvent;
 import flixel.FlxG;
 import flixel.addons.transition.FlxTransitionableState;
@@ -34,6 +36,11 @@ class MusicBeatState extends FlxUIState
 
 		if (oldStep != curStep && curStep >= 0)
 			stepHit();
+
+		if(PreferencesMenu.getPref("fps-plus"))
+			FlxG.stage.frameRate = 1000;
+		else
+			FlxG.stage.frameRate = 60;
 
 		super.update(elapsed);
 	}

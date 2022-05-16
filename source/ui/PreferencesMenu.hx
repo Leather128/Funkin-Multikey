@@ -24,12 +24,16 @@ class PreferencesMenu extends Page
 		menuCamera.bgColor = FlxColor.TRANSPARENT;
 		camera = menuCamera;
 		add(items = new TextMenuList());
+
 		createPrefItem('naughtyness', 'censor-naughty', true);
 		createPrefItem('downscroll', 'downscroll', false);
 		createPrefItem('flashing menu', 'flashing-menu', true);
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
+		createPrefItem('FPS Plus', 'fps-plus', false);
+		createPrefItem('Freeplay Music', 'freeplay-music', true);
+
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
 		if (items != null)
 		{
@@ -51,18 +55,31 @@ class PreferencesMenu extends Page
 
 	public static function initPrefs()
 	{
+		if(!preferences.exists("downscroll"))
+		{
+			if(FlxG.save.data.preferences != null)
+				preferences = FlxG.save.data.preferences;
+		}
+
 		preferenceCheck('censor-naughty', true);
 		preferenceCheck('downscroll', false);
 		preferenceCheck('flashing-menu', true);
 		preferenceCheck('camera-zoom', true);
 		preferenceCheck('fps-counter', true);
 		preferenceCheck('auto-pause', false);
+		preferenceCheck('fps-plus', false);
+		preferenceCheck('freeplay-music', true);
 		preferenceCheck('master-volume', 1);
+
 		if (!getPref('fps-counter'))
 		{
 			Lib.current.stage.removeChild(Main.fpsCounter);
 		}
+
 		FlxG.autoPause = getPref('auto-pause');
+
+		FlxG.save.data.preferences = preferences;
+		FlxG.save.flush();
 	}
 
 	public static function preferenceCheck(identifier:String, defaultValue:Dynamic)
@@ -71,6 +88,9 @@ class PreferencesMenu extends Page
 		{
 			preferences.set(identifier, defaultValue);
 			trace('set preference!');
+
+			FlxG.save.data.preferences = preferences;
+			FlxG.save.flush();
 		}
 		else
 		{
@@ -127,6 +147,9 @@ class PreferencesMenu extends Page
 				else
 					Lib.current.stage.removeChild(Main.fpsCounter);
 		}
+
+		FlxG.save.data.preferences = preferences;
+		FlxG.save.flush();
 	}
 
 	override function update(elapsed:Float)
