@@ -1,0 +1,14 @@
+{
+	"title":"Intro Mod",
+	"description":"Adds a new line to the introText.txt file",
+	"homepage": "https://ninja-muffin24.itch.io/funkin",
+	"contributors": [
+		{
+			"name": "ninjamuffin99",
+			"role": "Developer"
+		}
+	],
+	"api_version":"0.2.6",
+	"mod_version":"1.0.0",
+    "license":"Apache 2.0"
+}
