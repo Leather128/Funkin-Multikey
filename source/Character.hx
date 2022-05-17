@@ -1,5 +1,6 @@
 package;
 
+import custom.HScriptHandler;
 import flixel.math.FlxPoint;
 import openfl.Assets;
 import Section.SwagSection;
@@ -23,6 +24,8 @@ class Character extends FlxSprite
 	public var animationNotes:Array<Dynamic> = [];
 
 	public var posOffset:Array<Dynamic> = [0,0];
+
+	public var script:HScriptHandler;
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -506,6 +509,12 @@ class Character extends FlxSprite
 				playAnim('idle');
 		}
 
+		if(Assets.exists(Paths.hx("data/" + curCharacter)))
+		{
+			script = new HScriptHandler(Paths.hx("data/" + curCharacter));
+			script.callFunction("createCharacter", [curCharacter, isPlayer]);
+		}
+
 		dance();
 		animation.finish();
 
@@ -569,6 +578,9 @@ class Character extends FlxSprite
 
 	override function update(elapsed:Float)
 	{
+		if(script != null)
+			script.update(elapsed);
+
 		if (!isPlayer)
 		{
 			if (animation.curAnim.name.startsWith('sing'))
