@@ -84,18 +84,18 @@ class TitleState extends MusicBeatState
 				trace(error.message);
 			},
 			frameworkParams: {
-                assetLibraryPaths: [
-                    "songs" => "songs",
-                    "shared" => "shared",
-                    "week1" => "week1",
+				assetLibraryPaths: [
+					"songs" => "songs",
+					"shared" => "shared",
+					"week1" => "week1",
 					"week2" => "week2",
 					"week3" => "week3",
 					"week4" => "week4",
 					"week5" => "week5",
 					"week6" => "week6",
 					"week7" => "week7"
-                ]
-            }
+				]
+			}
 		});
 		#end
 	}

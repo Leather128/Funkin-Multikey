@@ -192,9 +192,24 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+	function fixedUpdate()
+	{
+		bg.color = FlxColor.interpolate(bg.color, coolColors[songs[curSelected].week % coolColors.length], 0.0225);
+	}
+
+	var stupidTimer:Float = 0.0;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		stupidTimer += elapsed;
+
+		if(stupidTimer > 1 / 120)
+		{
+			fixedUpdate();
+			stupidTimer = 0;
+		}
 
 		if (FlxG.sound.music != null && FlxG.sound.music.volume < 0.7)
 		{
@@ -202,7 +217,6 @@ class FreeplayState extends MusicBeatState
 		}
 
 		lerpScore = CoolUtil.coolLerp(lerpScore, intendedScore, 0.4);
-		bg.color = FlxColor.interpolate(bg.color, coolColors[songs[curSelected].week % coolColors.length], CoolUtil.camLerpShit(0.045));
 
 		scoreText.text = "PERSONAL BEST:" + Math.round(lerpScore);
 		positionHighscore();

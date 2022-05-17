@@ -1396,6 +1396,7 @@ class PlayState extends MusicBeatState
 				swagNote.sustainLength = songNotes[2];
 				swagNote.altNote = songNotes[3];
 				swagNote.scrollFactor.set(0, 0);
+				swagNote.raw_note = songNotes;
 
 				var susLength:Float = swagNote.sustainLength;
 
