@@ -199,6 +199,8 @@ class PlayState extends MusicBeatState
 
 		foregroundSprites = new FlxTypedGroup<BGSprite>();
 
+		var stage_script:HScriptHandler = null;
+
 		switch (SONG.song.toLowerCase())
 		{
 			case 'tutorial':
@@ -651,17 +653,21 @@ class PlayState extends MusicBeatState
 				    }
 		        	default:
 		        	{
+						defaultCamZoom = 0.9;
+
 						if(Assets.exists(Paths.hx('stages/${SONG.stage}')))
 						{
-							var stage_script = new HScriptHandler(Paths.hx('stages/${SONG.stage}'));
+							curStage = SONG.stage;
+
+							stage_script = new HScriptHandler(Paths.hx('stages/${SONG.stage}'));
 							stage_script.start();
 				
 							scripts.push(stage_script);
 						}
 						else
 						{
-							defaultCamZoom = 0.9;
 							curStage = 'stage';
+
 							bg = new BGSprite('stageback', -600, -200, 0.9, 0.9);
 							add(bg);
 	
@@ -828,6 +834,30 @@ class PlayState extends MusicBeatState
 
 		gf.x += gf.posOffset[0];
 		gf.y += gf.posOffset[1];
+
+		if(gf.script != null)
+			scripts.push(gf.script);
+		if(dad.script != null)
+			scripts.push(dad.script);
+		if(boyfriend.script != null)
+			scripts.push(boyfriend.script);
+
+		if(Assets.exists(Paths.hx("data/" + SONG.song.toLowerCase() + "/script")))
+		{
+			script = new HScriptHandler(Paths.hx("data/" + SONG.song.toLowerCase() + "/script"));
+			script.start();
+
+			scripts.push(script);
+		}
+
+		if(stage_script != null)
+		{
+			stage_script.interp.variables.set("bf", boyfriend);
+			stage_script.interp.variables.set("gf", gf);
+			stage_script.interp.variables.set("dad", dad);
+		}
+
+		allScriptCall("createStage");
 
 		add(gf);
 
@@ -1012,21 +1042,11 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if(Assets.exists(Paths.hx("data/" + SONG.song.toLowerCase() + "/script")))
+		for(script_funny in scripts)
 		{
-			script = new HScriptHandler(Paths.hx("data/" + SONG.song.toLowerCase() + "/script"));
-			script.start();
-
-			scripts.push(script);
+			script_funny.createPost = true;
 		}
-
-		if(gf.script != null)
-			scripts.push(gf.script);
-		if(dad.script != null)
-			scripts.push(dad.script);
-		if(boyfriend.script != null)
-			scripts.push(boyfriend.script);
-
+		
 		allScriptCall("createPost");
 
 		super.create();

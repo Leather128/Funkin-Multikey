@@ -18,6 +18,8 @@ class HScriptHandler
 
     public var other_scripts:Array<HScriptHandler> = [];
 
+    public var createPost:Bool = false;
+
     public function new(hscript_path: String)
     {
         // load text
@@ -28,6 +30,46 @@ class HScriptHandler
         parser.allowTypes = true;
         parser.allowMetadata = true;
 
+        setDefaultVariables();
+
+        interp.execute(program);
+    }
+
+    public function start()
+    {
+        callFunction("create");
+    }
+
+    public function update(elapsed:Float)
+    {
+        callFunction("update", [elapsed]);
+    }
+
+    public function callFunction(func:String, ?args:Array<Dynamic>)
+    {
+        if(interp.variables.exists(func))
+        {
+            var real_func = interp.variables.get(func);
+
+            try {
+                if(args == null)
+                    real_func();
+                else
+                    Reflect.callMethod(null, real_func, args);
+            } catch(e) {
+                trace(e.details());
+                trace("ERROR Caused in " + func + " with " + Std.string(args) + " args");
+            }
+        }
+
+        for(other_script in other_scripts)
+        {
+            other_script.callFunction(func, args);
+        }
+    }
+
+    public function setDefaultVariables()
+    {
         // global class shit
 
         // haxeflixel classes
@@ -72,7 +114,9 @@ class HScriptHandler
         interp.variables.set("loadScript", function(script_path:String) {
             var new_script = new HScriptHandler(script_path);
             new_script.start();
-            new_script.callFunction("createPost");
+            
+            if(createPost)
+                new_script.callFunction("createPost");
 
             other_scripts.push(new_script);
         });
@@ -89,39 +133,5 @@ class HScriptHandler
             PlayState.instance.remove(PlayState.instance.stageFront);
             PlayState.instance.remove(PlayState.instance.stageCurtains);
         });
-
-        interp.execute(program);
-    }
-
-    public function start()
-    {
-        callFunction("create");
-    }
-
-    public function update(elapsed:Float)
-    {
-        callFunction("update", [elapsed]);
-    }
-
-    public function callFunction(func:String, ?args:Array<Dynamic>)
-    {
-        if(interp.variables.exists(func))
-        {
-            var real_func = interp.variables.get(func);
-
-            try {
-                if(args == null)
-                    real_func();
-                else
-                    Reflect.callMethod(null, real_func, args);
-            } catch(e) {
-                trace(e);
-            }
-        }
-
-        for(other_script in other_scripts)
-        {
-            other_script.callFunction(func, args);
-        }
     }
 }
