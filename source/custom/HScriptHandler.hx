@@ -10,13 +10,13 @@ import hscript.Interp;
 **/
 class HScriptHandler
 {
-    var script:String;
+    public var script:String;
 
-    var parser:Parser = new Parser();
-    var program:Expr;
-    var interp:Interp = new Interp();
+    public var parser:Parser = new Parser();
+    public var program:Expr;
+    public var interp:Interp = new Interp();
 
-    var other_scripts:Array<HScriptHandler> = [];
+    public var other_scripts:Array<HScriptHandler> = [];
 
     public function new(hscript_path: String)
     {
@@ -38,6 +38,27 @@ class HScriptHandler
         interp.variables.set("FlxSprite", flixel.FlxSprite);
         interp.variables.set("Math", Math);
         interp.variables.set("Std", Std);
+
+        interp.variables.set("import", function(class_name:String) {
+            var classes = class_name.split(".");
+
+            if(Type.resolveClass(class_name) != null)
+                interp.variables.set(classes[classes.length - 1], Type.resolveClass(class_name));
+            else if(Type.resolveEnum(class_name) != null)
+            {
+                var enum_new = {};
+                var good_enum = Type.resolveEnum(class_name);
+
+                for(constructor in good_enum.getConstructors())
+                {
+                    Reflect.setField(enum_new, constructor, good_enum.createByName(constructor));
+                }
+
+                interp.variables.set(classes[classes.length - 1], enum_new);
+            }
+            else
+                trace(class_name + " isn't a valid class or enum!");
+        });
 
         // game classes
         interp.variables.set("PlayState", PlayState);
