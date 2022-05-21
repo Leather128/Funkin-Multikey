@@ -111,21 +111,9 @@ class ChartingState extends MusicBeatState
 		if (PlayState.SONG != null)
 			_song = PlayState.SONG;
 		else
-		{
-			_song = {
-				song: 'Test',
-				notes: [],
-				bpm: 150,
-				needsVoices: true,
-				player1: 'bf',
-				player2: 'dad',
-				speed: 1,
-				validScore: false
-			};
-		}
+			_song = Song.loadFromJson("tutorial", "tutorial");
 
 		FlxG.mouse.visible = true;
-		FlxG.save.bind('funkin', 'ninjamuffin99');
 
 		tempBpm = _song.bpm;
 
