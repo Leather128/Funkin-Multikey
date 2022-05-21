@@ -286,7 +286,7 @@ class PlayState extends MusicBeatState
 	                          add(halloweenBG);
 
 		                  isHalloween = true;
-		          }
+		            }
 		          case 'pico' | 'blammed' | 'philly': 
                         {
 		                  curStage = 'philly';
@@ -315,7 +315,7 @@ class PlayState extends MusicBeatState
 		                          light.antialiasing = true;
 								  light.shader = lightFadeShader.shader;
 		                          phillyCityLights.add(light);
-		                  }
+		                    }
 
 		                  var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.image('philly/behindTrain'));
 		                  add(streetBehind);
@@ -330,7 +330,7 @@ class PlayState extends MusicBeatState
 
 		                  var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.image('philly/street'));
 	                          add(street);
-		          }
+		            }
 		          case 'milf' | 'satin-panties' | 'high':
 		          {
 		                  curStage = 'limo';
@@ -355,7 +355,7 @@ class PlayState extends MusicBeatState
 		                          var dancer:BackgroundDancer = new BackgroundDancer((370 * i) + 130, bgLimo.y - 400);
 		                          dancer.scrollFactor.set(0.4, 0.4);
 		                          grpLimoDancers.add(dancer);
-		                  }
+		                    }
 
 		                  var overlayShit:FlxSprite = new FlxSprite(-500, -600).loadGraphic(Paths.image('limo/limoOverlay'));
 		                  overlayShit.alpha = 0.5;
@@ -375,7 +375,7 @@ class PlayState extends MusicBeatState
 
 		                  fastCar = new FlxSprite(-300, 160).loadGraphic(Paths.image('limo/fastCarLol'));
 		                  // add(limo);
-		          }
+		            }
 		          case 'cocoa' | 'eggnog':
 		          {
 	                          curStage = 'mall';
@@ -431,7 +431,7 @@ class PlayState extends MusicBeatState
 		                  santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
 		                  santa.antialiasing = true;
 		                  add(santa);
-		          }
+		            }
 		          case 'winter-horrorland':
 		          {
 		                  curStage = 'mallEvil';
@@ -451,7 +451,7 @@ class PlayState extends MusicBeatState
 		                  var evilSnow:FlxSprite = new FlxSprite(-200, 700).loadGraphic(Paths.image("christmas/evilSnow"));
 	                          evilSnow.antialiasing = true;
 		                  add(evilSnow);
-                        }
+                          }
 		          case 'senpai' | 'roses':
 		          {
 		                  curStage = 'school';
@@ -513,12 +513,12 @@ class PlayState extends MusicBeatState
 		                  if (SONG.song.toLowerCase() == 'roses')
 	                          {
 		                          bgGirls.getScared();
-		                  }
+		                    }
 
 		                  bgGirls.setGraphicSize(Std.int(bgGirls.width * daPixelZoom));
 		                  bgGirls.updateHitbox();
 		                  add(bgGirls);
-		          }
+		            }
 		          case 'thorns':
 		          {
 		                  curStage = 'schoolEvil';
@@ -580,7 +580,7 @@ class PlayState extends MusicBeatState
 		                            add(waveSprite);
 		                            add(waveSpriteFG);
 		                    */
-		          }
+		            }
 				  case 'guns' | 'stress' | 'ugh':
 				  {
 						defaultCamZoom = 0.9;
@@ -648,32 +648,42 @@ class PlayState extends MusicBeatState
 						
 						var tankdude3:BGSprite = new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']);
 						foregroundSprites.add(tankdude3);
-				  }
-		          default:
-		          {
-		                  defaultCamZoom = 0.9;
-						  curStage = 'stage';
-		                bg = new BGSprite('stageback', -600, -200, 0.9, 0.9);
-		                  add(bg);
-
-		                stageFront = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
-		                  stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-		                  stageFront.updateHitbox();
-		                  stageFront.antialiasing = true;
-		                  stageFront.scrollFactor.set(0.9, 0.9);
-		                  stageFront.active = false;
-		                  add(stageFront);
-
-		                stageCurtains = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
-		                  stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-		                  stageCurtains.updateHitbox();
-		                  stageCurtains.antialiasing = true;
-		                  stageCurtains.scrollFactor.set(1.3, 1.3);
-		                  stageCurtains.active = false;
-
-		                  add(stageCurtains);
-		          }
-              }
+				    }
+		        	default:
+		        	{
+						if(Assets.exists(Paths.hx('stages/${SONG.stage}')))
+						{
+							var stage_script = new HScriptHandler(Paths.hx('stages/${SONG.stage}'));
+							stage_script.start();
+				
+							scripts.push(stage_script);
+						}
+						else
+						{
+							defaultCamZoom = 0.9;
+							curStage = 'stage';
+							bg = new BGSprite('stageback', -600, -200, 0.9, 0.9);
+							add(bg);
+	
+							stageFront = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
+							stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+							stageFront.updateHitbox();
+							stageFront.antialiasing = true;
+							stageFront.scrollFactor.set(0.9, 0.9);
+							stageFront.active = false;
+							add(stageFront);
+	
+							stageCurtains = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
+							stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+							stageCurtains.updateHitbox();
+							stageCurtains.antialiasing = true;
+							stageCurtains.scrollFactor.set(1.3, 1.3);
+							stageCurtains.active = false;
+	
+							add(stageCurtains);
+						}
+		            }
+                }
 
 		var gfVersion:String = 'gf';
 
@@ -1006,7 +1016,6 @@ class PlayState extends MusicBeatState
 		{
 			script = new HScriptHandler(Paths.hx("data/" + SONG.song.toLowerCase() + "/script"));
 			script.start();
-			script.callFunction("createPost");
 
 			scripts.push(script);
 		}
@@ -1017,6 +1026,8 @@ class PlayState extends MusicBeatState
 			scripts.push(dad.script);
 		if(boyfriend.script != null)
 			scripts.push(boyfriend.script);
+
+		allScriptCall("createPost");
 
 		super.create();
 	}

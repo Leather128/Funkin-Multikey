@@ -18,6 +18,9 @@ typedef SwagSong =
 	var player1:String;
 	var player2:String;
 	var validScore:Bool;
+
+	// custom shit no week 7? :sadnesscombat:
+	var stage:String;
 }
 
 class Song
@@ -48,29 +51,22 @@ class Song
 			// LOL GOING THROUGH THE BULLSHIT TO CLEAN IDK WHATS STRANGE
 		}
 
-		// FIX THE CASTING ON WINDOWS/NATIVE
-		// Windows???
-		// trace(songData);
-
-		// trace('LOADED FROM JSON: ' + songData.notes);
-		/* 
-			for (i in 0...songData.notes.length)
-			{
-				trace('LOADED FROM JSON: ' + songData.notes[i].sectionNotes);
-				// songData.notes[i].sectionNotes = songData.notes[i].sectionNotes
-			}
-
-				daNotes = songData.notes;
-				daSong = songData.song;
-				daBpm = songData.bpm; */
-
 		return parseJSONshit(rawJson);
 	}
 
 	public static function parseJSONshit(rawJson:String):SwagSong
 	{
 		var swagShit:SwagSong = cast Json.parse(rawJson).song;
-		swagShit.validScore = true;
+		fixSong(swagShit);
+
 		return swagShit;
+	}
+
+	public static function fixSong(song:SwagSong)
+	{
+		if(song.stage == null)
+			song.stage = "stage";
+
+		song.validScore = true;
 	}
 }
