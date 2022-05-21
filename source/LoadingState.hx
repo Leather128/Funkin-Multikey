@@ -63,16 +63,21 @@ class LoadingState extends MusicBeatState
 			{
 				callbacks = new MultiCallback(onLoad);
 				var introComplete = callbacks.add("introComplete");
+
 				checkLoadSong(getSongPath());
+
 				if (PlayState.SONG.needsVoices)
 					checkLoadSong(getVocalPath());
+
 				checkLibrary("shared");
+
 				if (PlayState.storyWeek > 0)
 					checkLibrary("week" + PlayState.storyWeek);
 				else
 					checkLibrary("tutorial");
 				
 				FlxG.camera.fade(FlxG.camera.bgColor, 0.5, true);
+
 				new FlxTimer().start(1.5, function(_) introComplete());
 			}
 		);
@@ -96,6 +101,7 @@ class LoadingState extends MusicBeatState
 	function checkLibrary(library:String)
 	{
 		trace(Assets.hasLibrary(library));
+
 		if (Assets.getLibrary(library) == null)
 		{
 			@:privateAccess
@@ -120,27 +126,44 @@ class LoadingState extends MusicBeatState
 		var wacky = FlxG.width * 0.88;
 		funkay.setGraphicSize(Std.int(wacky + 0.9 * (funkay.width - wacky)));
 		funkay.updateHitbox();
+
 		if (controls.ACCEPT)
 		{
 			funkay.setGraphicSize(Std.int(funkay.width + 60));
 			funkay.updateHitbox();
+
 			#if debug
 			if (callbacks != null) trace('fired: ' + callbacks.getFired() + " unfired:" + callbacks.getUnfired());
 			#end
 		}
+
 		if (callbacks != null)
 		{
 			targetShit = FlxMath.remapToRange(callbacks.numRemaining / callbacks.length, 1, 0, 0, 1);
 			loadBar.scale.x += 0.5 * (targetShit - loadBar.scale.x);
 		}
 	}
-	
+
 	function onLoad()
 	{
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
-		
+
+		var ps:PlayState = null;
+
+		if(Type.getClass(target) == PlayState)
+		{
+			ps = new PlayState();
+
+			ps.create();
+		}
+
 		FlxG.switchState(target);
+
+		new FlxTimer().start(5, function(_) {
+			if(ps != null)
+				ps.destroy();
+		});
 	}
 	
 	static function getSongPath()
@@ -161,6 +184,7 @@ class LoadingState extends MusicBeatState
 	static function getNextState(target:FlxState, stopMusic = false):FlxState
 	{
 		Paths.setCurrentLevel("week" + PlayState.storyWeek);
+
 		#if NO_PRELOAD_ALL
 		var loaded = isSoundLoaded(getSongPath())
 			&& (!PlayState.SONG.needsVoices || isSoundLoaded(getVocalPath()))
@@ -169,6 +193,7 @@ class LoadingState extends MusicBeatState
 		if (!loaded)
 			return new LoadingState(target, stopMusic);
 		#end
+
 		if (stopMusic && FlxG.sound.music != null)
 			FlxG.sound.music.stop();
 		
