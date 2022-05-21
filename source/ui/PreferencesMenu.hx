@@ -31,7 +31,7 @@ class PreferencesMenu extends Page
 		createPrefItem('Camera Zooming on Beat', 'camera-zoom', true);
 		createPrefItem('FPS Counter', 'fps-counter', true);
 		createPrefItem('Auto Pause', 'auto-pause', false);
-		createPrefItem('FPS Plus', 'fps-plus', false);
+		createPrefItem('Unlimited FPS', 'fps-plus', false);
 		createPrefItem('Freeplay Music', 'freeplay-music', true);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
