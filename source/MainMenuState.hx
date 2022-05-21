@@ -102,9 +102,11 @@ class MainMenuState extends MusicBeatState
 			startExitState(new FreeplayState());
 		});
 
+		#if sys
 		menuItems.createItem(null, null, "mods", function() {
 			startExitState(new ModState());
 		});
+		#end
 
 		menuItems.createItem(0, 0, "options", function()
 		{
