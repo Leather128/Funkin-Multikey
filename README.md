@@ -2,7 +2,7 @@
 
 ![Logo](art/krita/FNF%20Multikey%20Logo.png)
 
-A Simple engine made with a [Week 7 Source Reverse Engineering](https://github.com/AngelDTF/FNF-NewgroundsPort) that adds mod support, extra settings, and multi-key (not done yet in week-7-engine/main branch lmao).
+A Simple engine made with a [Week 7 Source Reverse Engineering](https://github.com/AngelDTF/FNF-NewgroundsPort) that adds mod support, extra settings, and multi-key.
 
 That's pretty much it.
 
