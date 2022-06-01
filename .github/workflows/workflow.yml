@@ -38,7 +38,6 @@ jobs:
           haxelib install flixel-tools
           haxelib install flixel-ui
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
-          haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib install hscript
           haxelib install polymod 1.5.2
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
@@ -114,7 +113,6 @@ jobs:
           haxelib install flixel-tools
           haxelib install flixel-ui
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
-          haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib install hscript
           haxelib install polymod 1.5.2
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
@@ -153,7 +151,6 @@ jobs:
           haxelib install flixel-tools
           haxelib install flixel-ui
           haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
-          haxelib git linc_luajit https://github.com/AndreiRudenko/linc_luajit
           haxelib install hscript
           haxelib install polymod 1.5.2
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
