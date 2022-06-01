@@ -83,4 +83,12 @@ class CoolUtil
 		return maxKey;
 	}
 
+	public static function openURL(url:String)
+	{
+		#if linux
+		Sys.command('/usr/bin/xdg-open', [url]);
+		#else
+		FlxG.openURL(url);
+		#end
+	}
 }

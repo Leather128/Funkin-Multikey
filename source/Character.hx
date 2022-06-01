@@ -27,6 +27,10 @@ class Character extends FlxSprite
 
 	public var script:HScriptHandler;
 
+	public var dontDance:Bool = false;
+
+	public var danceLeftAndRight:Bool = false;
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
@@ -586,9 +590,12 @@ class Character extends FlxSprite
 
 		if (!isPlayer)
 		{
-			if (animation.curAnim.name.startsWith('sing'))
+			if(animation.curAnim != null)
 			{
-				holdTimer += elapsed;
+				if (animation.curAnim.name.startsWith('sing'))
+				{
+					holdTimer += elapsed;
+				}
 			}
 
 			var dadVar:Float = 4;
@@ -642,7 +649,7 @@ class Character extends FlxSprite
 	 */
 	public function dance()
 	{
-		if (!debugMode)
+		if (!debugMode && !dontDance)
 		{
 			switch (curCharacter)
 			{
@@ -669,7 +676,17 @@ class Character extends FlxSprite
 					if (!animation.curAnim.name.endsWith('DOWN-alt'))
 						playAnim('idle');
 				default:
-					playAnim('idle');
+					if(danceLeftAndRight)
+					{
+						danced = !danced;
+
+						if (danced)
+							playAnim('danceRight');
+						else
+							playAnim('danceLeft');
+					}
+					else
+						playAnim('idle');
 			}
 		}
 	}

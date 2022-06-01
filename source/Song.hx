@@ -21,6 +21,8 @@ typedef SwagSong =
 
 	// custom shit no week 7? :sadnesscombat:
 	var stage:String;
+
+	var mania:Null<Int>;
 }
 
 class Song
@@ -66,6 +68,9 @@ class Song
 	{
 		if(song.stage == null)
 			song.stage = "stage";
+
+		if(song.mania == null)
+			song.mania = 0;
 
 		song.validScore = true;
 	}

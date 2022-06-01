@@ -1,9 +1,10 @@
 package custom;
 
+import flixel.text.FlxText;
+import haxe.Json;
 import flixel.util.FlxColor;
 import flixel.group.FlxGroup;
 import flixel.FlxSprite;
-import MainMenuState.MainMenuItem;
 import flixel.FlxG;
 
 using StringTools;
@@ -13,9 +14,13 @@ class ModState extends MusicBeatState
     var selected_mods:Array<String> = [];
     var total_mods:Array<String> = [];
 
+    var mod_metadata:Map<String, polymod.Polymod.ModMetadata> = [];
+
     var mod_alphabets:FlxTypedGroup<Alphabet> = new FlxTypedGroup<Alphabet>();
 
     var selected:Int = 0;
+
+    var funnyInfo:FlxText = new FlxText(0,0,1280,"your mom", 24);
 
     public function new()
     {
@@ -35,7 +40,13 @@ class ModState extends MusicBeatState
         for(dir in sys.FileSystem.readDirectory(Sys.getCwd() + "mods"))
         {
             if(sys.FileSystem.exists(Sys.getCwd() + "mods/" + dir + "/_polymod_meta.json"))
+            {
                 total_mods.push(dir);
+
+                #if sys
+                mod_metadata.set(dir, polymod.Polymod.ModMetadata.fromJsonStr(sys.io.File.getContent(Sys.getCwd() + "mods/" + dir + "/_polymod_meta.json")));
+                #end
+            }
         }
         #end
 
@@ -65,6 +76,8 @@ class ModState extends MusicBeatState
                 mod_alphabets.add(new_alpha);
             }
         }
+
+        add(funnyInfo);
 
         changeItem(0);
     }
@@ -113,6 +126,12 @@ class ModState extends MusicBeatState
                     mod_alphabets.remove(alpha);
             }
         }
+
+        if(FlxG.keys.justPressed.SHIFT)
+        {
+            if(mod_metadata.exists(total_mods[selected]))
+                CoolUtil.openURL(mod_metadata.get(total_mods[selected]).homepage);
+        }
     }
 
     function changeItem(amount:Int = 0)
@@ -127,6 +146,34 @@ class ModState extends MusicBeatState
         updateAlphabets();
 
         FlxG.sound.play(Paths.sound("scrollMenu"));
+
+        //funnyInfo
+        funnyInfo.x = 0;
+
+        if(mod_metadata.exists(total_mods[selected]))
+        {
+            var data:polymod.Polymod.ModMetadata = mod_metadata.get(total_mods[selected]);
+
+            var contribs = "";
+
+            for(contributor in data.contributors)
+            {
+                if(data.contributors.indexOf(contributor) != data.contributors.length - 1)
+                    contribs += contributor.name + " - " + contributor.role + " | ";
+                else
+                    contribs += contributor.name + " - " + contributor.role;
+            }
+
+            funnyInfo.text = (
+                data.title + " - " +
+                data.description + "\nHomepage: " +
+                data.homepage + "\nDevs: " + contribs + 
+                "\nv" + data.modVersion + " using " + data.license + " as it's license.\n" +
+                "Press SHIFT to open homepage"
+            );
+
+            funnyInfo.y = 720 - funnyInfo.height - 4;
+        }
     }
 
     function updateAlphabets()

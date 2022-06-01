@@ -1,5 +1,7 @@
 package;
 
+import polymod.Polymod;
+import flixel.system.FlxSound;
 import lime.app.Application;
 import ui.PreferencesMenu;
 import Conductor.BPMChangeEvent;
@@ -17,6 +19,20 @@ class MusicBeatState extends FlxUIState
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
+
+	override public function new()
+	{
+		Polymod.clearCache();
+
+		FlxG.sound.list.forEachDead(function(sound:FlxSound) {
+			FlxG.sound.list.remove(sound, true);
+			sound.stop();
+			sound.kill();
+			sound.destroy();
+		});
+
+		super();
+	}
 
 	override function create()
 	{

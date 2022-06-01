@@ -16,6 +16,12 @@ class PreferencesMenu extends Page
 	var items:TextMenuList;
 	var camFollow:FlxObject;
 
+	#if debug
+	public static var developer_mode:Bool = true;
+	#else
+	public static var developer_mode:Bool = false;
+	#end
+
 	override public function new()
 	{
 		super();
@@ -33,8 +39,11 @@ class PreferencesMenu extends Page
 		createPrefItem('Auto Pause', 'auto-pause', false);
 		createPrefItem('Unlimited FPS', 'fps-plus', false);
 		createPrefItem('Freeplay Music', 'freeplay-music', true);
+		createPrefItem("Freeplay Cutscenes", 'freeplay-cutscenes', false);
+		createPrefItem("One Lane", 'one-lane', false);
 
 		camFollow = new FlxObject(FlxG.width / 2, 0, 140, 70);
+		
 		if (items != null)
 		{
 			camFollow.y = items.members[items.selectedIndex].y;
@@ -70,6 +79,8 @@ class PreferencesMenu extends Page
 		preferenceCheck('fps-plus', false);
 		preferenceCheck('freeplay-music', true);
 		preferenceCheck('master-volume', 1);
+		preferenceCheck('freeplay-cutscenes', false);
+		preferenceCheck('one-lane', false);
 
 		if (!getPref('fps-counter'))
 		{

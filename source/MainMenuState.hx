@@ -193,6 +193,13 @@ class MainMenuState extends MusicBeatState
 			FlxG.switchState(new TitleState());
 		}
 
+		if (FlxG.keys.justPressed.SEVEN)
+		{
+			PreferencesMenu.developer_mode = true;
+			FlxG.sound.play(Paths.sound("confirmMenu"));
+			FlxG.switchState(new MainMenuState());
+		}
+
 		super.update(elapsed);
 	}
 }
