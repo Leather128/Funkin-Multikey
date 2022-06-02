@@ -1559,9 +1559,12 @@ class PlayState extends MusicBeatState {
 	var canPause:Bool = true;
 	var cameraRightSide:Bool = false;
 
+	public var iconLerp:Float = 0.15;
+	public var cameraLerp:Float = 0.95;
+
 	function fixedUpdate() {
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.width, 150, 0.15)));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.width, 150, 0.15)));
+		iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.width, 150, iconLerp)));
+		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.width, 150, iconLerp)));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();
@@ -1589,8 +1592,8 @@ class PlayState extends MusicBeatState {
 		}
 
 		if (camZooming) {
-			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, 0.95);
-			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
+			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, cameraLerp);
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, cameraLerp);
 		}
 
 		if (script != null)

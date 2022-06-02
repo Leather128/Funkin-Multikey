@@ -611,7 +611,7 @@ class Character extends FlxSprite
 		for (i in offsets)
 		{
 			var split = i.split(' ');
-			addOffset(split[0], Std.parseInt(split[1]), Std.parseInt(split[2]));
+			addOffset(split[0], Std.parseFloat(split[1]), Std.parseFloat(split[2]));
 		}
 	}
 
