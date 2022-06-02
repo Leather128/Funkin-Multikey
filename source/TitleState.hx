@@ -463,10 +463,6 @@ class TitleState extends MusicBeatState
 			remove(ngSpr);
 			remove(credGroup);
 
-			// funny
-			credGroup.destroy();
-			ngSpr.destroy();
-
 			FlxG.camera.flash(FlxColor.WHITE, 4);
 
 			skippedIntro = true;
