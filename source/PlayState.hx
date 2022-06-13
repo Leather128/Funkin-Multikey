@@ -1896,9 +1896,7 @@ class PlayState extends MusicBeatState {
 				// WIP interpolation shit? Need to fix the pause issue
 				// daNote.y = (strumLine.y - (songTime - daNote.strumTime) * (0.45 * PlayState.SONG.speed));
 
-				var doKill = daNote.y < -daNote.height;
-				if (PreferencesMenu.getPref('downscroll'))
-					doKill = daNote.y > FlxG.height;
+				var doKill = Conductor.songPosition - Conductor.safeZoneOffset > daNote.strumTime;
 
 				if (doKill) {
 					if (daNote.tooLate || !daNote.wasGoodHit) {

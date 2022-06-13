@@ -1,10 +1,6 @@
 package;
 
 import ui.PreferencesMenu;
-#if desktop
-import Discord.DiscordClient;
-#end
-import flash.text.TextField;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
@@ -13,6 +9,10 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.utils.Assets;
+
+#if desktop
+import Discord.DiscordClient;
+#end
 
 using StringTools;
 
