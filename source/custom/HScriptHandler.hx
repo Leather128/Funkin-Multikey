@@ -80,6 +80,7 @@ class HScriptHandler
         interp.variables.set("FlxSprite", flixel.FlxSprite);
         interp.variables.set("Math", Math);
         interp.variables.set("Std", Std);
+        interp.variables.set("StringTools", StringTools);
 
         interp.variables.set("import", function(class_name:String) {
             var classes = class_name.split(".");

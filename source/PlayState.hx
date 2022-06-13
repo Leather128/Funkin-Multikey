@@ -163,6 +163,9 @@ class PlayState extends MusicBeatState {
 
 	public var gfVersion:String = 'gf';
 
+	public var customInput:Bool = false;
+	public var customIconBounce:Bool = false;
+
 	override public function create() {
 		instance = this;
 
@@ -1563,16 +1566,19 @@ class PlayState extends MusicBeatState {
 	public var cameraLerp:Float = 0.95;
 
 	function fixedUpdate() {
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.width, 150, iconLerp)));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.width, 150, iconLerp)));
+		if(!customIconBounce)
+		{
+			iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.width, 150, iconLerp)));
+			iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.width, 150, iconLerp)));
 
-		iconP1.updateHitbox();
-		iconP2.updateHitbox();
+			iconP1.updateHitbox();
+			iconP2.updateHitbox();
 
-		var iconOffset:Int = 26;
+			var iconOffset:Int = 26;
 
-		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
-		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+			iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+			iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+		}
 
 		if (health > 2)
 			health = 2;
@@ -1916,7 +1922,7 @@ class PlayState extends MusicBeatState {
 			});
 		}
 
-		if (!inCutscene)
+		if (!inCutscene && !customInput)
 			keyShit();
 
 		#if debug
@@ -2022,6 +2028,7 @@ class PlayState extends MusicBeatState {
 		//
 
 		var rating:FlxSprite = new FlxSprite();
+		var comboSpr:FlxSprite = new FlxSprite();
 		var score:Int = 350;
 
 		var daRating:String = "sick";
@@ -2050,7 +2057,7 @@ class PlayState extends MusicBeatState {
 		if (!practiceMode)
 			songScore += score;
 
-		allScriptCall("popUpScore", [daRating, noteDiff, daNote, combo]);
+		allScriptCall("popUpScore", [daRating, noteDiff, daNote, combo, rating]);
 
 		/* if (combo > 60)
 				daRating = 'sick';
@@ -2076,7 +2083,7 @@ class PlayState extends MusicBeatState {
 		rating.velocity.y -= FlxG.random.int(140, 175);
 		rating.velocity.x -= FlxG.random.int(0, 10);
 
-		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
+		comboSpr.loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
 		comboSpr.screenCenter();
 		comboSpr.x = coolText.x;
 		comboSpr.acceleration.y = 600;
@@ -2105,11 +2112,13 @@ class PlayState extends MusicBeatState {
 		seperatedScore.push(combo % 10);
 
 		var daLoop:Int = 0;
+
 		for (i in seperatedScore) {
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
 			numScore.screenCenter();
 			numScore.x = coolText.x + (43 * daLoop) - 90;
 			numScore.y += 80;
+			numScore.cameras = rating.cameras;
 
 			if (!curStage.startsWith('school')) {
 				numScore.antialiasing = true;
@@ -2584,16 +2593,19 @@ class PlayState extends MusicBeatState {
 			}
 		}
 
-		iconP1.setGraphicSize(Std.int(iconP1.width + 30));
-		iconP2.setGraphicSize(Std.int(iconP2.width + 30));
+		if(!customIconBounce)
+		{
+			iconP1.setGraphicSize(Std.int(iconP1.width + 30));
+			iconP2.setGraphicSize(Std.int(iconP2.width + 30));
 
-		iconP1.updateHitbox();
-		iconP2.updateHitbox();
+			iconP1.updateHitbox();
+			iconP2.updateHitbox();
 
-		var iconOffset:Int = 26;
+			var iconOffset:Int = 26;
 
-		iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
-		iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+			iconP1.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01) - iconOffset);
+			iconP2.x = healthBar.x + (healthBar.width * (FlxMath.remapToRange(healthBar.percent, 0, 100, 100, 0) * 0.01)) - (iconP2.width - iconOffset);
+		}
 
 		if (health > 2)
 			health = 2;
