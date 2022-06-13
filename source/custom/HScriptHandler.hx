@@ -119,6 +119,13 @@ class HScriptHandler
                 new_script.callFunction("createPost");
 
             other_scripts.push(new_script);
+
+            return other_scripts.length - 1;
+        });
+
+        interp.variables.set("unloadScript", function(script_index:Int) {
+            if(other_scripts.length - 1 >= script_index)
+                other_scripts.remove(other_scripts[script_index]);
         });
 
         interp.variables.set("otherScripts", other_scripts);
