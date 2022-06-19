@@ -79,6 +79,7 @@ class HScriptHandler
         interp.variables.set("LimeAssets", lime.utils.Assets);
         interp.variables.set("FlxSprite", flixel.FlxSprite);
         interp.variables.set("Math", Math);
+        interp.variables.set("FlxMath", flixel.math.FlxMath);
         interp.variables.set("Std", Std);
         interp.variables.set("StringTools", StringTools);
 
@@ -110,7 +111,9 @@ class HScriptHandler
         interp.variables.set("CoolUtil", CoolUtil);
 
         // function shits
-        interp.variables.set("trace", haxe.Log.trace);
+        interp.variables.set("trace", function(value:Dynamic) {
+            trace(value);
+        });
 
         interp.variables.set("loadScript", function(script_path:String) {
             var new_script = new HScriptHandler(script_path);
